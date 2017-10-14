@@ -5,6 +5,7 @@ Paginas <- Paginas[-59]
 Paginas <- Paginas[-147]
 Paginas <- Paginas[-170]
 Paginas <- Paginas[-206]
+Paginas <- Paginas[-471]
 
 
 
@@ -60,12 +61,10 @@ library(dplyr)
 
 ggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area() + theme_classic()
 
-ggplot(Alergia, aes(x = Semana, y = platano_oriental)) + geom_point()
 
 Weekly <- Alergia %>% select(Semana, platano_oriental) %>%group_by(Semana) %>% summarise_all(funs(mean, sd, max, min))
 
 
-ggplot(Weekly, aes(x = Semana, y = mean))+ geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd), fill = "blue", alpha = 0.5) + geom_line() 
+ggplot(Weekly, aes(x = Semana, y = mean))+  geom_ribbon(aes(ymax = max, ymin = min, fill = "red")) + geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd, fill = "blue"), alpha = 1) + geom_line() + scale_fill_manual(name = "leyenda", values = c("blue", "red"), labels = c('Error estándar','Extremos')) + ylab("polen de platano oriental /m³ de aire") + theme(legend.position="bottom") + theme_classic()
 
 
-+  geom_ribbon(aes(ymax = max, ymin = min), fill = "red") 
