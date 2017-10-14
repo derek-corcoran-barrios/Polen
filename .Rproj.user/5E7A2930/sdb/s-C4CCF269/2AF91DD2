@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1507994687473.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "2AF91DD2",
+    "lastKnownWriteTime" : 7954883542166428782,
+    "last_content_update" : 1507994687473,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "66CDB62B",
+        "caption" : "Fechas",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Fechas&cache_key=66CDB62B",
+        "displayedObservations" : "169",
+        "environment" : "",
+        "object" : "Fechas",
+        "preview" : "0",
+        "totalObservations" : "169",
+        "variables" : "1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

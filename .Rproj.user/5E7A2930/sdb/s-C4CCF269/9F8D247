@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(rvest)\nlibrary(lubridate)\nPaginas <- c(100:808)\nPaginas <- Paginas[-59]\nPaginas <- Paginas[-147]\nPaginas <- Paginas[-170]\n\n\nFechas <- list()\nNiveles <- list()\n\nfor (i in 1:length(Paginas)){\n  Polen <- read_html(paste0(\"http://www.polenes.cl/sitio/santiago.asp?idgraph=\", Paginas[i]))\n  Fecha <-Polen %>% html_nodes(\"span\") %>% html_text()\n  Fechas[[i]] <- sub(\".*Periodo: *(.*?) *hasta*\", \"\\\\1\", Fecha)\n  Nivel <- Polen %>% html_nodes(\"td\") %>% html_text()  \n  Niveles[[i]] <- as.numeric(gsub(\"[^0-9]\", \"\", Nivel[11:13], \"\"))\n  print(i)\n}\n\n\nFechas <- do.call(rbind, Fechas)\nFechas <- as.data.frame(Fechas)\ncolnames(Fechas) <- c(\"Fechas\")\n\nNiveles <- as.data.frame(do.call(rbind, Niveles))\ncolnames(Niveles) <- c(\"arboles_total\", \"platano_oriental\", \"pastos\")\n\nAlergia <- cbind(Fechas, Niveles)\nAlergia$Fechas <- as.character(Alergia$Fechas)\nAlergia$Fechas <-str_match(Alergia$Fechas, \"Período:(.*?) hasta\")[,2]\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Enero de \", \"1-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Febrero de \", \"2-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Marzo de \", \"3-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Abril de \", \"4-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Mayo de \", \"5-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Junio de \", \"6-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Julio de \", \"7-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Agosto de \", \"8-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Septiembre de \", \"9-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Octubre de \", \"10-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Noviembre de \", \"11-\")\nAlergia$Fechas <- str_replace(Alergia$Fechas, \"Diciembre de \", \"12-\")\n\n\nAlergia$Fechas <- dmy(Alergia$Fechas)\n\nAlergia$Anno <- year(Alergia$Fechas)\nAlergia$Mes <- month(Alergia$Fechas)\nAlergia$Semana <- week(Alergia$Fechas)\nAlergia <- dplyr::filter(Alergia, Anno > 2000)\n\nsaveRDS(Alergia, \"Alergia.rds\")\n\n\nlibrary(ggplot2)\n\nggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area() + theme_classic()\n\nggplot(Alergia, aes(x = Semana, y = platano_oriental)) + geom_point()\n\n\n",
+    "created" : 1507991695793.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3730891172",
+    "id" : "9F8D247",
+    "lastKnownWriteTime" : 1508003342,
+    "last_content_update" : 1508003357231,
+    "path" : "~/Documents/Polen/Polenes.R",
+    "project_path" : "Polenes.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
