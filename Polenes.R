@@ -124,22 +124,24 @@ Alergia <- rbind(Alergia2, Alergia)
 
 saveRDS(Alergia, "Alergia.rds")
 
-
+Alergia <- readRDS("Alergia.rds")
 
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-ggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area() + theme_classic()
+ggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area() + theme_classic() + ylab("polen de platano oriental /m³ de aire") + xlab("Fecha")
 
 
-Weekly <- Alergia %>% select(Semana, platano_oriental) %>%group_by(Semana) %>% summarise_all(funs(mean, sd, max, min))
+Weekly <- Alergia %>% select(Semana, platano_oriental) %>%group_by(Semana) %>% summarise_all(funs(mean, sd, max, min)) 
 
 
 ggplot(Weekly, aes(x = Semana, y = mean))+  geom_ribbon(aes(ymax = max, ymin = min, fill = "red")) + geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd, fill = "blue"), alpha = 1) + geom_line() + scale_fill_manual(name = "leyenda", values = c("blue", "red"), labels = c('Error estándar','Extremos')) + ylab("polen de platano oriental /m³ de aire") + theme_classic()  + theme(legend.position="bottom") + scale_x_continuous(breaks=seq(from = 2.5, to = 49.5, by = 4), labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
 
 Weekly2 <- Alergia %>% select(Semana, platano_oriental, arboles_total, pastos) %>% gather(key = Especie, value = Polen, -Semana) %>%group_by(Semana, Especie) %>% summarise_if(is.numeric, funs(mean, sd, max, min))
 
-ggplot(Weekly2, aes(x = Semana, y = mean))+  geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd, fill = Especie), alpha = 1) + geom_line(aes(lty = Especie)) + ylab("polen/m³ de aire") + theme_classic()  + theme(legend.position="bottom") + scale_x_continuous(breaks=seq(from = 2.5, to = 49.5, by = 4), labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
+ggplot(Weekly2, aes(x = Semana, y = mean))+  geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd, fill = Especie), alpha = 0.5) + geom_line(aes(lty = Especie)) + ylab("polen/m³ de aire") + theme_classic()  + theme(legend.position="bottom") + scale_x_continuous(breaks=seq(from = 2.5, to = 49.5, by = 4), labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"))
 
+yearly_scaled <- Alergia %>% filter(Mes %in% c(8,9,10,11)) %>% select(platano_oriental, Anno, Semana, Fechas) %>% group_by(Semana) %>% summarise(Media = mean(platano_oriental)) %>% left_join(Alergia) %>% select(platano_oriental, Anno, Semana, Media, Fechas) %>% mutate(Escalado = (platano_oriental - Media)/Media)
 
+ggplot(yearly_scaled, aes(x = Fechas, y = Escalado))+ geom_line() + geom_point() + geom_smooth(method = "lm")
