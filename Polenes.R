@@ -4,6 +4,8 @@ Paginas <- c(100:808)
 Paginas <- Paginas[-59]
 Paginas <- Paginas[-147]
 Paginas <- Paginas[-170]
+Paginas <- Paginas[-206]
+
 
 
 Fechas <- list()
@@ -54,9 +56,16 @@ saveRDS(Alergia, "Alergia.rds")
 
 
 library(ggplot2)
+library(dplyr)
 
-ggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area()
+ggplot(Alergia, aes(x = Fechas, y = platano_oriental)) + geom_area() + theme_classic()
 
 ggplot(Alergia, aes(x = Semana, y = platano_oriental)) + geom_point()
 
+Weekly <- Alergia %>% select(Semana, platano_oriental) %>%group_by(Semana) %>% summarise_all(funs(mean, sd, max, min))
 
+
+ggplot(Weekly, aes(x = Semana, y = mean))+ geom_ribbon(aes(ymax = mean + sd, ymin = mean - sd), fill = "blue", alpha = 0.5) + geom_line() 
+
+
++  geom_ribbon(aes(ymax = max, ymin = min), fill = "red") 

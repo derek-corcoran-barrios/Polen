@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1508007816809.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CB561035",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1508007816809,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "E2D13E52",
+        "caption" : "Weekly",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Weekly&cache_key=E2D13E52",
+        "displayedObservations" : 52,
+        "environment" : "",
+        "object" : "Weekly",
+        "preview" : 0,
+        "totalObservations" : 52,
+        "variables" : 25
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
